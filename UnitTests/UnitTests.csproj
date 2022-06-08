@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="sha-3bittestvectors\SHA3_*Msg.rsp">
+    <None Update="sha-3bittestvectors\SHA3_*.rsp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

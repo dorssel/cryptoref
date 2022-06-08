@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test --configuration Release --no-build --filter "TestCategory != Slow" --verbosity normal --collect:"XPlat Code Coverage"
     - name: CodeCov
       uses: codecov/codecov-action@v3
       with:

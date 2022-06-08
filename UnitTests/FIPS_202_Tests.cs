@@ -65,7 +65,7 @@ public class FIPS_202_Tests
         string Seed;
         var MDexpected = new string[100];
         {
-            var content = File.ReadAllText($@"sha-3bittestvectors\SHA3_{n}Monte.rsp");
+            var content = File.ReadAllText($@"sha-3bittestvectors/SHA3_{n}Monte.rsp");
             var L = int.Parse(Regex.Matches(content, @"\[L = (\d+)]").Single().Groups[1].Value);
             Assert.AreEqual(n, L);
             Seed = Convert.FromHexString(Regex.Matches(content, @"Seed = ([0-9a-fA-F]+)").Single().Groups[1].Value).ToBitString(L);
