@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2022 Frans van Dorsselaer
+#
+# SPDX-License-Identifier: MIT
+
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --configuration Release --no-build --filter "TestCategory != Slow" --verbosity normal --collect:"XPlat Code Coverage"
+    - name: CodeCov
+      uses: codecov/codecov-action@v3
+      with:
+        # Not strictly required, but codecov upload fails often. Maybe this helps...
+        token: ${{ secrets.CODECOV_TOKEN }}
