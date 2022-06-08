@@ -28,29 +28,43 @@ public class FIPS_202_Tests
     [TestCategory("NIST")]
     [TestCategory("Slow")]
     [NistSha3MsgDataSource(224)]
-    public void SHA3_BitTestVectors_224(string Msg, string MD)
+    public void SHA3_224_BitTestVectors(string Msg, string MD)
         => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_224(Msg));
 
     [TestMethod]
     [TestCategory("NIST")]
     [TestCategory("Slow")]
     [NistSha3MsgDataSource(256)]
-    public void SHA3_BitTestVectors_256(string Msg, string MD)
+    public void SHA3_256_BitTestVectors(string Msg, string MD)
         => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_256(Msg));
 
     [TestMethod]
     [TestCategory("NIST")]
     [TestCategory("Slow")]
     [NistSha3MsgDataSource(384)]
-    public void SHA3_BitTestVectors_384(string Msg, string MD)
+    public void SHA3_384_BitTestVectors(string Msg, string MD)
         => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_384(Msg));
 
     [TestMethod]
     [TestCategory("NIST")]
     [TestCategory("Slow")]
     [NistSha3MsgDataSource(512)]
-    public void SHA3_BitTestVectors_512(string Msg, string MD)
+    public void SHA3_512_BitTestVectors(string Msg, string MD)
         => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_512(Msg));
+
+    [TestMethod]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistShakeMsgDataSource(128)]
+    public void SHAKE128_BitTestVectors(string Msg, int Outputlen, string Output)
+        => Assert.AreEqual(Output, FIPS_202.SHA3.SHAKE128(Msg, Outputlen));
+
+    [TestMethod]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistShakeMsgDataSource(256)]
+    public void SHAKE256_BitTestVectors(string Msg, int Outputlen, string Output)
+        => Assert.AreEqual(Output, FIPS_202.SHA3.SHAKE256(Msg, Outputlen));
 
     [TestMethod]
     [TestCategory("NIST")]
@@ -110,21 +124,31 @@ public class FIPS_202_Tests
 
     [TestMethod]
     [NistSha3MsgDataSource(224, QuickTest = true)]
-    public void SHA3_BitTestVectors_224_Quick(string Msg, string MD)
-        => SHA3_BitTestVectors_224(Msg, MD);
+    public void SHA3_224_BitTestVectors_Quick(string Msg, string MD)
+        => SHA3_224_BitTestVectors(Msg, MD);
 
     [TestMethod]
     [NistSha3MsgDataSource(256, QuickTest = true)]
-    public void SHA3_BitTestVectors_256_Quick(string Msg, string MD)
-        => SHA3_BitTestVectors_256(Msg, MD);
+    public void SHA3_256_BitTestVectors_Quick(string Msg, string MD)
+        => SHA3_256_BitTestVectors(Msg, MD);
 
     [TestMethod]
     [NistSha3MsgDataSource(384, QuickTest = true)]
-    public void SHA3_BitTestVectors_384_Quick(string Msg, string MD)
-        => SHA3_BitTestVectors_384(Msg, MD);
+    public void SHA3_384_BitTestVectors_Quick(string Msg, string MD)
+        => SHA3_384_BitTestVectors(Msg, MD);
 
     [TestMethod]
     [NistSha3MsgDataSource(512, QuickTest = true)]
-    public void SHA3_BitTestVectors_512_Quick(string Msg, string MD)
-        => SHA3_BitTestVectors_512(Msg, MD);
+    public void SHA3_512_BitTestVectors_Quick(string Msg, string MD)
+        => SHA3_512_BitTestVectors(Msg, MD);
+
+    [TestMethod]
+    [NistShakeMsgDataSource(128, QuickTest = true)]
+    public void SHAKE128_BitTestVectors_Quick(string Msg, int Outputlen, string Output)
+        => SHAKE128_BitTestVectors(Msg, Outputlen, Output);
+
+    [TestMethod]
+    [NistShakeMsgDataSource(256, QuickTest = true)]
+    public void SHAKE256_BitTestVectors_Quick(string Msg, int Outputlen, string Output)
+        => SHAKE256_BitTestVectors(Msg, Outputlen, Output);
 }

@@ -12,8 +12,7 @@ namespace UnitTests
         static NistSha3MsgTestVector()
         {
             var testVectors = new List<NistSha3MsgTestVector>();
-            var files = Directory.GetFiles("sha-3bittestvectors", "SHA3*Msg.rsp");
-            foreach (var file in files)
+            foreach (var file in Directory.GetFiles("sha-3bittestvectors", "SHA3*Msg.rsp"))
             {
                 var content = File.ReadAllText(file);
                 var L = int.Parse(Regex.Matches(content, @"\[L = (\d+)]").Single().Groups[1].Value);
