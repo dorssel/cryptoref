@@ -6,7 +6,7 @@ namespace UnitTests;
 
 /// <summary>
 /// <para>
-/// These tests are from the
+/// These Known Ansert Tests (KATs) are from the
 /// <see href="https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program">
 /// Cryptographic Algorithm Validation Program CAVP</see>
 /// </para>
@@ -22,82 +22,50 @@ namespace UnitTests;
 /// </para>
 /// </summary>
 [TestClass]
-public class UnitTests_FIPS_202
+public class FIPS_202_Tests
 {
-    /// <summary>
-    /// This class holds all the ShortMsg and LongMsg test vectors for every defined hash length.
-    /// </summary>
-    sealed class SHA3_BitTestVectors
-    {
-        record TestVector(int L, string Msg, string MD);
-
-        static readonly List<TestVector> TestVectors = new();
-
-        static SHA3_BitTestVectors()
-        {
-            var files = Directory.GetFiles("sha-3bittestvectors", "SHA3*Msg.rsp");
-            foreach (var file in files)
-            {
-                var content = File.ReadAllText(file);
-                var L = int.Parse(Regex.Matches(content, @"\[L = (\d+)]").Single().Groups[1].Value);
-                foreach (Match match in Regex.Matches(content, @"Len = (\d+)\s*Msg = ([0-9a-fA-F]+)\s*MD = ([0-9a-fA-F]+)"))
-                {
-                    var Len = int.Parse(match.Groups[1].Value);
-                    var Msg = Convert.FromHexString(match.Groups[2].Value).ToBitString(Len);
-                    var MD = Convert.FromHexString(match.Groups[3].Value).ToBitString(L);
-                    TestVectors.Add(new(L, Msg, MD));
-                }
-            }
-        }
-
-        static IEnumerable<object[]> SelectLength(int L)
-            => from testVector in TestVectors where testVector.L == L select new object[] { testVector.Msg, testVector.MD };
-
-        public static IEnumerable<object[]> SHA3_224 => SelectLength(224);
-        public static IEnumerable<object[]> SHA3_256 => SelectLength(256);
-        public static IEnumerable<object[]> SHA3_384 => SelectLength(384);
-        public static IEnumerable<object[]> SHA3_512 => SelectLength(512);
-    }
-
     [TestMethod]
-    [DynamicData(nameof(SHA3_BitTestVectors.SHA3_224), typeof(SHA3_BitTestVectors))]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistSha3MsgDataSource(224)]
     public void SHA3_BitTestVectors_224(string Msg, string MD)
-    {
-        Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_224(Msg));
-    }
+        => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_224(Msg));
 
     [TestMethod]
-    [DynamicData(nameof(SHA3_BitTestVectors.SHA3_256), typeof(SHA3_BitTestVectors))]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistSha3MsgDataSource(256)]
     public void SHA3_BitTestVectors_256(string Msg, string MD)
-    {
-        Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_256(Msg));
-    }
+        => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_256(Msg));
 
     [TestMethod]
-    [DynamicData(nameof(SHA3_BitTestVectors.SHA3_384), typeof(SHA3_BitTestVectors))]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistSha3MsgDataSource(384)]
     public void SHA3_BitTestVectors_384(string Msg, string MD)
-    {
-        Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_384(Msg));
-    }
+        => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_384(Msg));
 
     [TestMethod]
-    [DynamicData(nameof(SHA3_BitTestVectors.SHA3_512), typeof(SHA3_BitTestVectors))]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
+    [NistSha3MsgDataSource(512)]
     public void SHA3_BitTestVectors_512(string Msg, string MD)
-    {
-        Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_512(Msg));
-    }
+        => Assert.AreEqual(MD, FIPS_202.SHA3.SHA3_512(Msg));
 
     [TestMethod]
+    [TestCategory("NIST")]
+    [TestCategory("Slow")]
     [DataRow(224)]
     [DataRow(256)]
     [DataRow(384)]
     [DataRow(512)]
     public void SHA3_MonteCarlo(int n)
     {
+        // Load Known Answer Test (KAT) results.
         string Seed;
         var MDexpected = new string[100];
         {
-            var content = File.ReadAllText($@"sha-3bittestvectors\SHA3_{L}Monte.rsp");
+            var content = File.ReadAllText($@"sha-3bittestvectors\SHA3_{n}Monte.rsp");
             var L = int.Parse(Regex.Matches(content, @"\[L = (\d+)]").Single().Groups[1].Value);
             Assert.AreEqual(n, L);
             Seed = Convert.FromHexString(Regex.Matches(content, @"Seed = ([0-9a-fA-F]+)").Single().Groups[1].Value).ToBitString(L);
@@ -115,7 +83,7 @@ public class UnitTests_FIPS_202
             256 => FIPS_202.SHA3.SHA3_256,
             384 => FIPS_202.SHA3.SHA3_384,
             512 => FIPS_202.SHA3.SHA3_512,
-            _ => throw new InternalTestFailureException($"Undefined SHA3 hash length {L}")
+            _ => throw new InternalTestFailureException($"Undefined SHA3 hash length {n}")
         };
 
         // SHA3VS Section 6.2.3 (Figure 1)
@@ -139,4 +107,24 @@ public class UnitTests_FIPS_202
             }
         }
     }
+
+    [TestMethod]
+    [NistSha3MsgDataSource(224, QuickTest = true)]
+    public void SHA3_BitTestVectors_224_Quick(string Msg, string MD)
+        => SHA3_BitTestVectors_224(Msg, MD);
+
+    [TestMethod]
+    [NistSha3MsgDataSource(256, QuickTest = true)]
+    public void SHA3_BitTestVectors_256_Quick(string Msg, string MD)
+        => SHA3_BitTestVectors_256(Msg, MD);
+
+    [TestMethod]
+    [NistSha3MsgDataSource(384, QuickTest = true)]
+    public void SHA3_BitTestVectors_384_Quick(string Msg, string MD)
+        => SHA3_BitTestVectors_384(Msg, MD);
+
+    [TestMethod]
+    [NistSha3MsgDataSource(512, QuickTest = true)]
+    public void SHA3_BitTestVectors_512_Quick(string Msg, string MD)
+        => SHA3_BitTestVectors_512(Msg, MD);
 }

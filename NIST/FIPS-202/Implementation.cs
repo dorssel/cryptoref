@@ -10,7 +10,7 @@ public class KECCAK_p
     const int w = 64;
     const int l = 6;
 
-    char[,,] ConvertStringToStateArray(string S)
+    static char[,,] ConvertStringToStateArray(string S)
     {
         InputValidation.BitStringLength(S, b);
 
@@ -28,7 +28,7 @@ public class KECCAK_p
         return A;
     }
 
-    string ConvertStateArrayToString(char[,,] A)
+    static string ConvertStateArrayToString(char[,,] A)
     {
         InputValidation.StateMatrix(A, w);
 
@@ -250,8 +250,8 @@ public class SPONGE
 
 public class KECCAK
 {
-    static KECCAK_p KECCAK_p = new();
-    static SPONGE SPONGE = new();
+    static readonly KECCAK_p KECCAK_p = new();
+    static readonly SPONGE SPONGE = new();
 
     static string pad10_1(int x, int m)
     {
@@ -265,7 +265,7 @@ public class KECCAK
 
 public class SHA3
 {
-    static KECCAK KECCAK = new();
+    static readonly KECCAK KECCAK = new();
 
     public static string SHA3_224(string M) => KECCAK[448](M + "01", 224);
     public static string SHA3_256(string M) => KECCAK[512](M + "01", 256);
