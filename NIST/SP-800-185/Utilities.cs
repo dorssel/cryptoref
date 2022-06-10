@@ -13,33 +13,6 @@ public static class Utilities
         return (x %= modulus) < 0 ? (x + modulus) : x;
     }
 
-    public static char Dot(this char bit, char otherBit)
-    {
-        InputValidation.Bit(bit);
-        InputValidation.Bit(otherBit);
-
-        // Function
-        return ((bit == '1') && (otherBit == '1')) ? '1' : '0';
-    }
-
-    public static char Xor(this char bit, char otherBit)
-    {
-        InputValidation.Bit(bit);
-        InputValidation.Bit(otherBit);
-
-        // Function
-        return (bit == otherBit) ? '0' : '1';
-    }
-
-    public static string Xor(this string s, string otherString)
-    {
-        InputValidation.BitString(s);
-        InputValidation.BitStringLength(otherString, s.Length);
-
-        // Function
-        return new(s.Zip(otherString, (bit1, bit2) => bit1.Xor(bit2)).ToArray());
-    }
-
     public static string ToBitString(this byte[] bytes, int Len)
     {
         // Input validation
