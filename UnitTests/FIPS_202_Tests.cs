@@ -6,12 +6,12 @@ namespace UnitTests;
 
 /// <summary>
 /// <para>
-/// These Known Ansert Tests (KATs) are from the
+/// These Known Answer Tests (KATs) are from the
 /// <see href="https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program">
 /// Cryptographic Algorithm Validation Program CAVP</see>
 /// </para>
 /// <para>
-/// These test are an informal verification, using the test vectors from
+/// These tests are an informal verification, using the test vectors from
 /// <see href="https://csrc.nist.gov/Projects/Cryptographic-Algorithm-Validation-Program/Secure-Hashing">
 /// CAVP Testing: Secure Hashing</see>
 /// </para>
