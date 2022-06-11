@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NIST\FIPS-202\FIPS-202.csproj" />
+    <ProjectReference Include="..\NIST\SP-800-185\SP-800-185.csproj" />
   </ItemGroup>
 
   <ItemGroup>
