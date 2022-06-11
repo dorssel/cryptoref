@@ -37,4 +37,33 @@ public class SP_800_185_Tests
     {
         Assert.AreEqual(testVector.Outval, SP_800_185.KMAC.KMAC256(testVector.Key, testVector.Data, testVector.Outval.Length, testVector.S));
     }
+
+    [TestMethod]
+    [TestCategory("NIST")]
+    [NistShakeMsgDataSource(128, QuickTest = true)]
+    public void cSHAKE128_BitTestVectors_Quick(string Msg, int Outputlen, string Output)
+    {
+        Assert.AreEqual(Output, SP_800_185.KMAC.cSHAKE128(Msg, Outputlen, "", ""));
+    }
+
+    [TestMethod]
+    [TestCategory("NIST")]
+    [NistShakeMsgDataSource(256, QuickTest = true)]
+    public void cSHAKE256_BitTestVectors_Quick(string Msg, int Outputlen, string Output)
+    {
+        Assert.AreEqual(Output, SP_800_185.KMAC.cSHAKE256(Msg, Outputlen, "", ""));
+    }
+
+    const string LeftEncoded_1 = "1000000010000000";
+
+    [TestMethod]
+    [DataRow("", 1, LeftEncoded_1 + "")]
+    [DataRow("1", 1, LeftEncoded_1 + "10000000")]
+    [DataRow("1111111", 1, LeftEncoded_1 + "11111110")]
+    [DataRow("11111111", 1, LeftEncoded_1 + "11111111")]
+    [DataRow("111111111", 1, LeftEncoded_1 + "1111111110000000")]
+    public void bytepad(string X, int w, string z)
+    {
+        Assert.AreEqual(z, SP_800_185.KMAC.bytepad(X, w));
+    }
 }

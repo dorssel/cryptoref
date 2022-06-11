@@ -65,7 +65,7 @@ public class KMAC
         return left_encode(S.Length) + S;
     }
 
-    static string bytepad(string X, int w)
+    internal static string bytepad(string X, int w)
     {
         InputValidation.Assert(w > 0);
 
